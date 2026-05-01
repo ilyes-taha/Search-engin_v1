@@ -482,7 +482,7 @@ body {
     border-radius: 6px;
     padding: 16px 20px;
     margin-bottom: 20px;
-    color: var(--fg-muted);
+    color: var(--muted);
     font-size: 14px;
     line-height: 1.6;
     text-align: left;
