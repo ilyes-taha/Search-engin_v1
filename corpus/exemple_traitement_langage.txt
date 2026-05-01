@@ -1,0 +1,25 @@
+Traitement Automatique du Langage Naturel (TALN)
+
+Le traitement automatique du langage naturel (TALN), ou Natural Language Processing (NLP) en anglais, est un domaine de l'intelligence artificielle qui se concentre sur l'interaction entre les ordinateurs et le langage humain.
+
+Principales tâches du TALN :
+
+1. Tokenisation : La tokenisation est le processus de division d'un texte en unités plus petites appelées tokens. Ces tokens peuvent être des mots, des phrases ou des caractères individuels. C'est souvent la première étape dans le traitement d'un texte.
+
+2. Suppression des mots vides (stopwords) : Les mots vides sont des mots très fréquents qui n'apportent pas de signification sémantique significative, comme « le », « la », « et », « de ». Leur suppression améliore la qualité des analyses.
+
+3. Lemmatisation et racinisation : La lemmatisation réduit les mots à leur forme de base (lemme). Par exemple, « mangeons », « mangé » et « manger » ont tous le même lemme « manger ». La racinisation (stemming) est une opération similaire mais moins précise.
+
+4. Analyse syntaxique : Cette étape analyse la structure grammaticale d'une phrase pour comprendre les relations entre les mots.
+
+5. Reconnaissance des entités nommées (NER) : Identification et classification des entités dans le texte, comme les noms de personnes, d'organisations, de lieux, etc.
+
+Applications pratiques :
+- Traduction automatique (Google Translate, DeepL)
+- Analyse des sentiments dans les réseaux sociaux
+- Chatbots et assistants virtuels
+- Résumé automatique de textes
+- Correction grammaticale et orthographique
+- Extraction d'information à partir de documents
+
+Les modèles de langage modernes comme BERT, GPT et leurs variantes ont révolutionné le domaine en permettant une compréhension beaucoup plus fine du contexte et de la sémantique.
