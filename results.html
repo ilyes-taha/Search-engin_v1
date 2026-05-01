@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexora — Résultats</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=Courier+Prime&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/main.css">
+</head>
+<body>
+    <div class="grid-overlay"></div>
+    <div class="noise"></div>
+
+    <div class="results-page">
+        <nav class="topbar">
+            <a href="/" class="topbar__logo">◈ NEXORA</a>
+            <form action="/" method="post" class="topbar__form">
+                <input type="text" name="q" value="{{ query }}" placeholder="Nouvelle recherche…">
+                <button type="submit">→</button>
+            </form>
+        </nav>
+
+        <div class="results-header">
+            <p class="results-meta">
+                <span class="mono">{{ hits|length }} résultat{% if hits|length > 1 %}s{% endif %}</span>
+                <span class="sep">·</span>
+                <span class="mono">{{ elapsed }}s</span>
+                <span class="sep">·</span>
+                <span class="mono">« {{ query }} »</span>
+            </p>
+        </div>
+
+        <div class="results-list">
+            {% if hits %}
+                {% for name, score, preview in hits %}
+                <article class="result-card" style="animation-delay: {{ loop.index0 * 0.07 }}s">
+                    <div class="result-card__rank">{{ loop.index }}</div>
+                    <div class="result-card__body">
+                        <a href="{{ url_for('view_doc', doc_name=name) }}" class="result-card__title">
+                            {{ name }}
+                        </a>
+                        <p class="result-card__preview">{{ preview }}</p>
+                        <div class="result-card__meta">
+                            <span class="score-bar">
+                                <span class="score-fill" style="width: {{ (score * 100)|round(1) }}%"></span>
+                            </span>
+                            <span class="mono score-val">{{ (score * 100)|round(2) }}%</span>
+                            <a href="{{ url_for('fetch_doc', doc_name=name) }}" class="dl-link">↓ Télécharger</a>
+                        </div>
+                    </div>
+                </article>
+                {% endfor %}
+            {% else %}
+                <div class="no-results">
+                    <div class="no-results__icon">∅</div>
+                    <p>Aucun document ne correspond à votre recherche.</p>
+                    <a href="/" class="btn-back">← Nouvelle recherche</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

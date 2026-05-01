@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Nexora — {{ name }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=Courier+Prime&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/main.css">
+</head>
+<body>
+    <div class="grid-overlay"></div>
+    <nav class="topbar">
+        <a href="/" class="topbar__logo">◈ NEXORA</a>
+        <a href="javascript:history.back()" class="topbar__back">← Retour</a>
+    </nav>
+    <div class="viewer">
+        <h2 class="viewer__title">{{ name }}</h2>
+        <pre class="viewer__content">{{ content }}</pre>
+        <a href="{{ url_for('fetch_doc', doc_name=name) }}" class="btn-dl">↓ Télécharger ce fichier</a>
+    </div>
+</body>
+</html>
