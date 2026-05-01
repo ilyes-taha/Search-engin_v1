@@ -1,0 +1,16 @@
+Les Moteurs de Recherche : Fonctionnement et Histoire
+
+Un moteur de recherche est un système informatique conçu pour effectuer des recherches dans des bases de données d'informations. Les moteurs de recherche sur Internet permettent aux utilisateurs de trouver des sites web, des images, des vidéos et d'autres ressources en ligne.
+
+Histoire des moteurs de recherche :
+Les premiers moteurs de recherche sont apparus au début des années 1990. Archie, créé en 1990, est considéré comme le premier moteur de recherche. Il indexait les fichiers disponibles sur les serveurs FTP. Yahoo! a été lancé en 1994 et Google en 1998, révolutionnant la manière dont nous cherchons de l'information.
+
+Fonctionnement technique :
+Les moteurs de recherche utilisent des programmes appelés « robots » ou « araignées » (crawlers/spiders) pour parcourir le web automatiquement. Ces robots suivent les liens hypertextes de page en page, collectant des informations sur chaque page visitée. Les informations collectées sont ensuite indexées et stockées dans de grandes bases de données.
+
+L'algorithme de classement est le cœur d'un moteur de recherche. Google utilise PageRank, un algorithme qui mesure l'importance d'une page web en fonction du nombre et de la qualité des liens qui pointent vers elle. Des centaines d'autres facteurs entrent également en jeu.
+
+TF-IDF (Term Frequency-Inverse Document Frequency) est une mesure statistique utilisée pour évaluer l'importance d'un mot dans un document par rapport à une collection de documents. Elle est largement utilisée dans les moteurs de recherche et le traitement automatique du langage naturel.
+
+Optimisation pour les moteurs de recherche (SEO) :
+Le référencement naturel vise à améliorer la visibilité d'un site dans les résultats organiques des moteurs de recherche. Les techniques de SEO comprennent l'optimisation des mots-clés, la création de contenu de qualité et l'amélioration de la structure technique du site.

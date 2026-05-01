@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify, send_from_directory
 import os
+import logging
 import nltk
 from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.corpus import stopwords
@@ -7,28 +8,44 @@ import numpy as np
 import time
 import PyPDF2
 
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 nltk.download('stopwords')
 
 def read_pdf(path):
-    with open(path, "rb") as file:
-        pdf = PyPDF2.PdfReader(file)
-        content = ""
-        for pg in pdf.pages:
-            content += pg.extract_text()
-    return content
+    try:
+        with open(path, "rb") as file:
+            pdf = PyPDF2.PdfReader(file)
+            content = ""
+            for pg in pdf.pages:
+                page_text = pg.extract_text()
+                if page_text:
+                    content += page_text
+        return content
+    except Exception as e:
+        logger.warning("Could not parse PDF '%s': %s", path, e)
+        return ""
 
 nexora = Flask(__name__)
 
 CORPUS_DIR = "corpus"
+os.makedirs(CORPUS_DIR, exist_ok=True)
+
 corpus = {}
 
 for fname in os.listdir(CORPUS_DIR):
     fpath = os.path.join(CORPUS_DIR, fname)
     if fname.endswith(".txt"):
-        with open(fpath, "r", encoding="utf-8") as f:
-            corpus[fname] = f.read()
+        try:
+            with open(fpath, "r", encoding="utf-8") as f:
+                corpus[fname] = f.read()
+        except Exception as e:
+            logger.warning("Could not read file '%s': %s", fpath, e)
     elif fname.endswith(".pdf"):
-        corpus[fname] = read_pdf(fpath)
+        content = read_pdf(fpath)
+        if content:
+            corpus[fname] = content
 
 french_stopwords = set(stopwords.words('french'))
 
@@ -39,13 +56,30 @@ def normalize(text):
 
 normalized_corpus = {fname: normalize(body) for fname, body in corpus.items()}
 
-engine = TfidfVectorizer()
-doc_matrix = engine.fit_transform(normalized_corpus.values())
-doc_names = list(normalized_corpus.keys())
+engine = None
+doc_matrix = None
+doc_names = []
+
+if normalized_corpus:
+    non_empty = {k: v for k, v in normalized_corpus.items() if v.strip()}
+    if non_empty:
+        try:
+            engine = TfidfVectorizer()
+            doc_matrix = engine.fit_transform(non_empty.values())
+            doc_names = list(non_empty.keys())
+        except ValueError as e:
+            logger.warning("Could not build search index: %s", e)
+    else:
+        logger.info("Corpus contains only stopwords or empty documents. Search index not built.")
+else:
+    logger.info("No documents found in corpus directory '%s'. Add .txt or .pdf files to enable search.", CORPUS_DIR)
 
 @nexora.route("/", methods=["GET", "POST"])
 def home():
     if request.method == "POST":
+        if engine is None:
+            return render_template("results.html", hits=[], elapsed=0, query=request.form["q"], empty_corpus=True)
+
         t0 = time.time()
         query = request.form["q"]
         norm_query = normalize(query)
@@ -60,12 +94,14 @@ def home():
         ]
 
         elapsed = round(time.time() - t0, 4)
-        return render_template("results.html", hits=hits, elapsed=elapsed, query=query)
+        return render_template("results.html", hits=hits, elapsed=elapsed, query=query, empty_corpus=False)
 
-    return render_template("search.html")
+    return render_template("search.html", empty_corpus=(engine is None))
 
 @nexora.route("/suggest", methods=["GET"])
 def suggest():
+    if engine is None:
+        return jsonify([])
     q = request.args.get("q", "").lower()
     matches = [w for w in engine.get_feature_names_out() if q in w][:8]
     return jsonify(matches)

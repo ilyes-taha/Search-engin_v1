@@ -31,7 +31,14 @@
         </div>
 
         <div class="results-list">
-            {% if hits %}
+            {% if empty_corpus %}
+                <div class="no-results">
+                    <div class="no-results__icon">⚠</div>
+                    <p>Le répertoire <code>corpus/</code> est vide ou ne contient aucun document indexable.<br>
+                    Ajoutez des fichiers <strong>.txt</strong> ou <strong>.pdf</strong>, puis relancez l'application.</p>
+                    <a href="/" class="btn-back">← Retour</a>
+                </div>
+            {% elif hits %}
                 {% for name, score, preview in hits %}
                 <article class="result-card" style="animation-delay: {{ loop.index0 * 0.07 }}s">
                     <div class="result-card__rank">{{ loop.index }}</div>
